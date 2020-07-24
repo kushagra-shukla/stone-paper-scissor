@@ -11,7 +11,7 @@ repeate
 
 */
 
-const player1 = new Player('Akshita');
+const player1 = new Player('Akshi');
 const player2 = new Player('Kush');
 const player3 = new Player('Omen');
 const player4 = new Player('Raze');
