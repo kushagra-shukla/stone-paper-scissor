@@ -11,12 +11,18 @@ A small simulation of the game Stone-Paper-Scissor using node.js.
 
 ## Output Samples in CLI:
 * Sample output in CLI of Win Board.
+
+
 ![WIN BOARD](./samples/win_board.png)
 
 * Sample output in CLI of Win and Lose Board.
+
+
 ![WIN + LOSE BOARD](./samples/win_lose_board.png)
 
 * Sample output in CLI of Win, Lose and Draw Board.
+
+
 ![WIN + LOSE + DRAW BOARD](./samples/win_lose_draw_board.png)
 
 * Cumulative view of total wins, lose and draws for each player can also be viewed by uncommenting [code lines](https://github.com/kushagra-shukla/stone-paper-scissor/blob/abc3e4d2ef7170ed1e40825990fea2f2a55aea6d/index.js#L11) in index.js. 
