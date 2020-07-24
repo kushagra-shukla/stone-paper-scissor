@@ -20,4 +20,6 @@ A small simulation of the game Stone-Paper-Scissor using node.js.
 ![WIN + LOSE + DRAW BOARD](./samples/win_lose_draw_board.png)
 
 * Cumulative view of total wins, lose and draws for each player can also be viewed by uncommenting [code lines](https://github.com/kushagra-shukla/stone-paper-scissor/blob/abc3e4d2ef7170ed1e40825990fea2f2a55aea6d/index.js#L11) in index.js. 
+
+
 ![Players Score Summary](./samples/players_object.png)
