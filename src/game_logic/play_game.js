@@ -35,8 +35,8 @@ exports.playGame = (players,score) => {
 					}
 					// Lose
 					else if(opponentPlayerHand === 'Paper'){
-						players[i].setWins = players[i].wins + 1;
-						players[j].setLoses = players[j].loses + 1;
+						players[i].setLoses = players[i].loses + 1;
+						players[j].setWins = players[j].wins + 1;
 						updateScore(i,j,'lose',score);
 					}
 					// Draw
@@ -60,8 +60,8 @@ exports.playGame = (players,score) => {
 					}
 					// Lose
 					else if(opponentPlayerHand === 'Scissor'){
-						players[i].setWins = players[i].wins + 1;
-						players[j].setLoses = players[j].loses + 1;
+						players[i].setLoses = players[i].loses + 1;
+						players[j].setWins = players[j].wins + 1;
 						updateScore(i,j,'lose',score);
 					}
 					// Draw
@@ -85,8 +85,8 @@ exports.playGame = (players,score) => {
 					}
 					// Lose
 					else if(opponentPlayerHand === 'Stone'){
-						players[i].setWins = players[i].wins + 1;
-						players[j].setLoses = players[j].loses + 1;
+						players[i].setLoses = players[i].loses + 1;
+						players[j].setWins = players[j].wins + 1;
 						updateScore(i,j,'lose',score);
 					}
 					// Draw

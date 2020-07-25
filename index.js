@@ -8,4 +8,4 @@ for(let i=0;i<simulationCount;i++){
 	console.log(`\t\t\t\t\tITERATION #${i+1}:\t\t\t\t\t`);
 	stonePaperScissor.playGame(players,score);
 }
-//console.log(`${JSON.stringify(players,null,'\t')}`);
+console.log(`${JSON.stringify(players,null,'\t')}`);
