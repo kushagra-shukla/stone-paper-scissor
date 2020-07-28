@@ -1,11 +1,12 @@
 const allMoves = require('./legal_moves.js');
 module.exports = class Player{
-	move = null;
-	wins = 0;
-	loses = 0;
-	draws = 0;
+
 	constructor(name){
 		this.name = name;
+		this.move = null;
+		this.wins = 0;
+		this.loses = 0;
+		this.draws = 0;
 	}
 
 	set setWins(wins){
