@@ -1,4 +1,5 @@
 const display = require('../display/display.js');
+const legalMoves = require('../data_model/legal_moves.js');
 
 exports.playGame = (players,score) => {
 	drawHand(players);
@@ -20,90 +21,35 @@ exports.playGame = (players,score) => {
 
 			let opponentPlayerHand = players[j].move;
 			
-
-			// Below code needs refactoring 
-			// Note: (index+1)%3 wins from index
-			// (index+2)%3 loses from index	
-			switch(currentPlayerHand){
-				case 'Stone':
-
-					//Win if opponent has Scissor
-					if(opponentPlayerHand === 'Scissor'){
-						players[i].setWins = players[i].wins + 1;
-						players[j].setLoses = players[j].loses + 1;
-						updateScore(i,j,'win',score);
-					}
-					// Lose
-					else if(opponentPlayerHand === 'Paper'){
-						players[i].setLoses = players[i].loses + 1;
-						players[j].setWins = players[j].wins + 1;
-						updateScore(i,j,'lose',score);
-					}
-					// Draw
-					else if(opponentPlayerHand === 'Stone'){
-						players[i].setDraws = players[i].draws + 1;
-						players[j].setDraws = players[j].draws + 1;
-						updateScore(i,j,'draw',score);
-					}
-					else{
-						console.log(`Illegal Move by other guy 		${opponentPlayerHand}`);
-					}
-					break;
-
-				case 'Paper':
-
-					//Win if opponent has Scissor
-					if(opponentPlayerHand === 'Stone'){
-						players[i].setWins = players[i].wins + 1;
-						players[j].setLoses = players[j].loses + 1;
-						updateScore(i,j,'win',score);
-					}
-					// Lose
-					else if(opponentPlayerHand === 'Scissor'){
-						players[i].setLoses = players[i].loses + 1;
-						players[j].setWins = players[j].wins + 1;
-						updateScore(i,j,'lose',score);
-					}
-					// Draw
-					else if(opponentPlayerHand === 'Paper'){
-						players[i].setDraws = players[i].draws + 1;
-						players[j].setDraws = players[j].draws + 1;
-						updateScore(i,j,'draw',score);
-					}
-					else{
-						console.log(`Illegal Move by other guy 		${opponentPlayerHand}`);
-					}
-					break;
-
-				case 'Scissor':
-
-					//Win if opponent has Scissor
-					if(opponentPlayerHand === 'Paper'){
-						players[i].setWins = players[i].wins + 1;
-						players[j].setLoses = players[j].loses + 1;
-						updateScore(i,j,'win',score);
-					}
-					// Lose
-					else if(opponentPlayerHand === 'Stone'){
-						players[i].setLoses = players[i].loses + 1;
-						players[j].setWins = players[j].wins + 1;
-						updateScore(i,j,'lose',score);
-					}
-					// Draw
-					else if(opponentPlayerHand === 'Scissor'){
-						players[i].setDraws = players[i].draws + 1;
-						players[j].setDraws = players[j].draws + 1;
-						updateScore(i,j,'draw',score);
-					}
-					else{
-						console.log(`Illegal Move by other guy 		${opponentPlayerHand}`);
-					}
-					break;
-				default:
-					 console.log(`Illegal Move by one guy 		${currentPlayerHand}`);
-					break;
+			// error check
+			if(findIndex(currentPlayerHand) === -1 || findIndex(opponentPlayerHand) === -1){
+				console.log("Invalid Move Index");
 			}
 
+			// game logic => use modulus to mimic the cyclic nature of stone-paper-scissor
+
+			// lose => p1Index+1%3 === p2Index => p1 loses
+			//console.log(`${currentPlayerHand}: ${findIndex(currentPlayerHand)}\t${opponentPlayerHand}: ${findIndex(opponentPlayerHand)}`);
+			if((findIndex(currentPlayerHand)+1)%3 === findIndex(opponentPlayerHand)){
+				players[i].setLoses = players[i].loses + 1;
+				players[j].setWins = players[j].wins + 1;
+				updateScore(i,j,'lose',score);
+				//console.log("lose");
+			}
+			// win => p1Index+2%3 === p2Index => p1 wins
+			else if((findIndex(currentPlayerHand)+2)%3 === findIndex(opponentPlayerHand)){
+				players[i].setWins = players[i].wins + 1;
+				players[j].setLoses = players[j].loses + 1;
+				updateScore(i,j,'win',score);
+				//console.log("win");
+			}
+			// draw
+			else if(findIndex(currentPlayerHand) === findIndex(opponentPlayerHand)){
+				players[i].setDraws = players[i].draws + 1;
+				players[j].setDraws = players[j].draws + 1;
+				updateScore(i,j,'draw',score);
+				//console.log("draw");
+			}
 
 		}
 
@@ -116,50 +62,46 @@ exports.playGame = (players,score) => {
 	//display.scoreBoard(score,'draw');
 };
 
+function findIndex(move){
+	return legalMoves.indexOf(move);
+}
+
+function updateSheet(oneGuy, otherGuy, sheet){
+
+	if(sheet[oneGuy].hasOwnProperty(otherGuy)){
+		sheet[oneGuy][otherGuy] += 1;
+	}
+	else{
+		sheet[oneGuy][otherGuy] = 1;
+	}
+	//console.log(sheet)
+}
 
 function updateScore(oneGuy, otherGuy, result, score){
+	// why toLowerCase() ?
+	// don't trust anybody not even yourself
 	if(result.toLowerCase() === 'win'){
-		if(score.winTally[oneGuy].hasOwnProperty(otherGuy)){
-			score.winTally[oneGuy][otherGuy] += 1;
-		}
-		else{
-			score.winTally[oneGuy][otherGuy] = 1;
-		}
-		if(score.loseTally[otherGuy].hasOwnProperty(oneGuy)){
-			score.loseTally[otherGuy][oneGuy] += 1;
-		}
-		else{
-			score.loseTally[otherGuy][oneGuy] = 1;
-		}
+		// one guy wins
+		updateSheet(oneGuy,otherGuy,score.winTally);
+		// other guy loses
+		updateSheet(otherGuy,oneGuy,score.loseTally);
 	}
 	else if(result.toLowerCase() === 'lose'){
-		if(score.loseTally[oneGuy].hasOwnProperty(otherGuy)){
-			score.loseTally[oneGuy][otherGuy] += 1;
-		}
-		else{
-			score.loseTally[oneGuy][otherGuy] = 1;
-		}
-		if(score.winTally[otherGuy].hasOwnProperty(oneGuy)){
-			score.winTally[otherGuy][oneGuy] += 1;
-		}
-		else{
-			score.winTally[otherGuy][oneGuy] = 1;
-		}		
+		// one guy loses
+		updateSheet(oneGuy,otherGuy,score.loseTally);
+		// other guy wins
+		updateSheet(otherGuy,oneGuy,score.winTally);
 	}
 	else if(result.toLowerCase() === 'draw'){
-		if(score.drawTally[oneGuy].hasOwnProperty(otherGuy)){
-			// draw will reflect in both players equally so no furhter checks required
-			score.drawTally[oneGuy][otherGuy] += 1;
-			score.drawTally[otherGuy][oneGuy] += 1;
-		}
-		else{
-			score.drawTally[oneGuy][otherGuy] = 1;
-			score.drawTally[otherGuy][oneGuy] = 1;
-		}
+		// one guy draws
+		updateSheet(oneGuy,otherGuy,score.drawTally);
+		// other guy draws
+		updateSheet(otherGuy,oneGuy,score.drawTally);
 	}
 	else{
 		console.log(`Illegal state		${result}`);
 	}
+	//console.log(score);
 }
 
 function drawHand(players){
